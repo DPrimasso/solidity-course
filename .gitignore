@@ -1,0 +1,16 @@
+.env
+node_modules
+
+# IDEs
+.idea
+.vscode
+.editorconfig
+
+
+#Hardhat files
+cache
+artifacts
+data
+package-lock.json
+docs
+
