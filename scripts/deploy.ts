@@ -2,9 +2,6 @@ import hardhat from 'hardhat';
 import {BigNumber} from "ethers";
 const { run, ethers } = hardhat;
 
-let tokenERC20Contract;
-
-let initialBalance: BigNumber = ethers.utils.parseEther("10000")
 async function main(): Promise<void> {
   const [deployer] = await ethers.getSigners();
 
@@ -13,24 +10,13 @@ async function main(): Promise<void> {
   console.log('Account balance:', (await deployer.getBalance()).toString());
 
   // script deploy
+  const erc721Factory = await ethers.getContractFactory("TokenERC721");
+  const erc721Contract = await erc721Factory.deploy("NFTest", "NFT")
+  console.log("Contract deployed to: ", erc721Contract.address)
+  let tx = await erc721Contract.mint(deployer.address, 0, "");
+  await tx.wait();
+  console.log("MINT ok")
 
-  // factory
-  const tokenERC20Factory = await ethers.getContractFactory("TokenERC20");
-  tokenERC20Contract = await tokenERC20Factory.deploy(initialBalance);
-  await tokenERC20Contract.deployed()
-
-  console.log("TokenERC20 is deployed to: " + tokenERC20Contract.address);
-
-  // Verifying contracts
-  if (hardhat.network.name !== 'hardhat' && hardhat.network.name !== 'localhost') {
-    await new Promise((f) => setTimeout(f, 10000));
-
-    await run('verify:verify', {
-      address: tokenERC20Contract.address,
-      constructorArguments: [initialBalance],
-    });
-
-  }
 }
 
 main()

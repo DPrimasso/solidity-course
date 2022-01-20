@@ -1,0 +1,15 @@
+{
+  "name": "Name project",
+  "description": "Descriptor project",
+  "attributes": [
+    {
+      "trait_type": "Caratteristica1",
+      "value": ""
+    },
+    {
+      "trait_type": "Caratteristica2",
+      "value": ""
+    }
+  ],
+  "image": ""
+}

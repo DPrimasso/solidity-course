@@ -9,8 +9,8 @@ async function main(): Promise<void> {
   console.log('Account balance:', (await deployer.getBalance()).toString());
 
   await run('verify:verify', {
-    address: "0x97E9Dd777dfCa10B0387a1a437481a96A2573e8d",
-    constructorArguments: ["Hello world"],
+    address: "0xc4bf2b1b7cb124c64c0e9ba1569d8eb613c2dfad",
+    constructorArguments: ["NFTest", "NFT"],
   });
 }
 
