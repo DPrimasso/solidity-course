@@ -18,13 +18,13 @@ module.exports = {
   solidity: "0.8.7",
   networks: {
     mainnet: {
-      url: "https://bsc-dataseed.binance.org/",
+      url: "https://bsc-dataseed.binance.org/", // bsc mainnet
       chainId: 56,
       gasPrice: 20000000000,
       accounts: [PRIVATE_KEY]
     },
     testnet: {
-      url: "https://data-seed-prebsc-1-s1.binance.org:8545",
+      url: "https://data-seed-prebsc-1-s1.binance.org:8545", // bsc testnet
       chainId: 97,
       gasPrice: 20000000000,
       accounts: [PRIVATE_KEY]

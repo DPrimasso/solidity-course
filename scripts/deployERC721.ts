@@ -3,6 +3,10 @@ import {BigNumber} from "ethers";
 const { run, ethers } = hardhat;
 
 async function main(): Promise<void> {
+  // get rpc url -> rpc provider
+  // get privKey -> signer
+  // new contract ( abi, rpc, signer )
+
   const [deployer] = await ethers.getSigners();
 
   console.log('Deploying contracts with the account:', deployer.address);
@@ -16,7 +20,6 @@ async function main(): Promise<void> {
   let tx = await erc721Contract.mint(deployer.address, 0, "");
   await tx.wait();
   console.log("MINT ok")
-
 }
 
 main()
