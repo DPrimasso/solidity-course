@@ -63,15 +63,13 @@ describe("Testing... ", async () => {
 
       });
 
-
-
       it('should mint ', async () => {
         await tokenERC1155Manager.connect(account1).mint(account1.address, 0, maxSupplyToken0.div(2), []);
         let balanceAccount1 = await tokenERC1155Manager.balanceOf(account1.address, 0);
         expect(balanceAccount1).to.be.equal(maxSupplyToken0.div(2))
       });
 
-      it('should rever if mint over supply ', async () => {
+      it('should revert if mint over supply ', async () => {
         await catchRevert(tokenERC1155Manager.connect(account1).mint(account1.address, 0, maxSupplyToken0, []));
       });
 
@@ -81,7 +79,6 @@ describe("Testing... ", async () => {
         expect(await tokenERC1155Descriptor.getMaxSupplyByTypeId(0)).to.be.equal(maxSupplyToken0)
       });
 
-
       it('should mint batch', async () => {
         await tokenERC1155Manager.connect(account1).mintBatch(account2.address, [1,2], [1, 100], []);
         let balanceBatch = await tokenERC1155Manager.balanceOfBatch([account2.address, account2.address], [1,2]);
@@ -89,7 +86,7 @@ describe("Testing... ", async () => {
         expect(balanceBatch[1]).to.be.equal(100)
       });
 
-      it('should mint batch', async () => {
+      it('should revert mint batch', async () => {
         await catchRevert(tokenERC1155Manager.connect(account1).mintBatch(account2.address, [1,2], [1000, 100], []));
       });
 
@@ -102,6 +99,30 @@ describe("Testing... ", async () => {
         expect(balanceBatch[1]).to.be.equal(balanceBatchInitial[1].add(10000000))
 
       });
+
+      it('should approve token of deployer vs account2', async () => {
+        await tokenERC1155Manager.setApprovalForAll(account2.address, true)
+
+        expect(await tokenERC1155Manager.isApprovedForAll(deployer.address, account2.address)).to.be.true;
+      });
+
+
+      it('should transferFrom account deployer vs account3 with account2', async () => {
+        let balanceDeployerToken0Initial = await tokenERC1155Manager.balanceOf(deployer.address, 0);
+        let balanceAccount3Token0Initial = await tokenERC1155Manager.balanceOf(account3.address, 0);
+
+        let amount = balanceDeployerToken0Initial.div(2)
+        await tokenERC1155Manager.connect(account2).safeTransferFrom(deployer.address, account3.address, 0, amount, [])
+
+        // check balance
+        let balanceOfDeployerToken0End = await tokenERC1155Manager.balanceOf(deployer.address, 0)
+        expect(balanceOfDeployerToken0End).to.be.equal(balanceDeployerToken0Initial.sub(amount))
+
+        let balanceOfAccount3Token0End = await tokenERC1155Manager.balanceOf(account3.address, 0)
+        expect(balanceOfAccount3Token0End).to.be.equal(balanceAccount3Token0Initial.add(amount))
+
+      });
+
 
     })
 
